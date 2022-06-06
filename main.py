@@ -1,41 +1,39 @@
-import os
+import os, gspread, googlemaps, json
 from dotenv import load_dotenv, find_dotenv
-import gspread
-import googlemaps
 from pprint import pp
-import json
 
 load_dotenv(find_dotenv())
 API_KEY = os.getenv('API_KEY')
 mapClient = googlemaps.Client(key=API_KEY)
-# response = mapClient.places(query="pet groomer")
-# results = response.get('results')
-# pp(results[0])
-# with open('biz.json', 'w') as biz:
-#     json.dump(results, biz)
-# with open('biz.json', 'r') as read_file:
-#     datas = json.load(read_file)
-# pp(datas)
-# for data in datas:
-# print(f'{data}\n')
-# address = data.get('formatted_address')
-# status = data.get('business_status')
-# name = data.get('name')
-# id = data.get('place_id')
-detailsResults = mapClient.place(place_id="ChIJB40IZrSRwoARTC6QbhjaaKM")
-with open('bizDetails.json', 'r') as read_file:
-    bizDetails = json.load(read_file)
-    phone = bizDetails["result"]["formatted_phone_number"]
-    webiste = bizDetails["result"]["website"]
-    print(phone, webiste)
-    # phone = bizDetails.get("formatted_phone_number")
-    # print(phone)
 
-    # pp(details.get('website'))
-    # phone = details.get('formatted_phone_number')
-    # website = details.get('website')
-    # with open('bizDetails.json', 'w') as biz:
-    #     json.dump(detailsResults, biz)
+def searchFor(category):
+  response = mapClient.places(query=category)
+  return response.get('results')
+
+def writeBusinessDetails(listOfBusinesses, category):
+  with open(f'./categories/{category}.json', 'w') as detailsFile:
+    json.dump(listOfBusinesses, detailsFile)
+
+def getAdditionalDetails(businessID):
+  details = mapClient.place(place_id=businessID)
+  phone = details["result"]["formatted_phone_number"]
+  # website = details["result"]["website"]
+  return phone
+
+input = "pet-groomer"
+results = searchFor(input)
+
+businesses = []
+for result in results:
+  business = {
+    'identifier': result['place_id'],
+    'status': result['business_status'],
+    'title': result['name'],
+    'address': result['formatted_address'],
+  }
+  business['phone'] = getAdditionalDetails(business['identifier'])
+  businesses.append(business)
+writeBusinessDetails(businesses, input)
 
 
 # sa = gspread.service_account(filename="svc-biz-list.json")
