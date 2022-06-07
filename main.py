@@ -1,4 +1,4 @@
-import os, gspread, googlemaps, json
+import os, googlemaps, json
 from dotenv import load_dotenv, find_dotenv
 from pprint import pp
 
@@ -34,8 +34,3 @@ for result in results:
   business['phone'] = getAdditionalDetails(business['identifier'])
   businesses.append(business)
 writeBusinessDetails(businesses, input)
-
-
-# sa = gspread.service_account(filename="svc-biz-list.json")
-# sh = sa.open("Biz-List")
-# wks = sh.worksheet("Sheet1")
