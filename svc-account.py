@@ -12,10 +12,18 @@ def getCategories(dir):
 
 
 def createNewList(category):
-    listOfTabs = gSheet.worksheets()
-    for tab in listOfTabs:
-        if not tab.title == category:
-            gSheet.add_worksheet(title=category, rows=1, cols=1)
+  tabExists = False
+  # check if False || throws an exception: "WorksheetNotFound: category"
+  # tab = gSheet.worksheet(category)
+  # if tab exists: return
+  # if tabe does not exist
+  # create the new tab
+
+  # CREATES NEW TAB BUT THROWS ERR: "SHEET ALREADY EXISTS" even when !TRUE
+  listOfTabs = gSheet.worksheets()
+  for tab in listOfTabs:
+      if not tab.title == category:
+          gSheet.add_worksheet(title=category, rows=1, cols=1)
 
 
 for category in getCategories('./categories'):
