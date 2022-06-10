@@ -6,6 +6,12 @@ A Python application that uses the Google Places API and Google Cloud Platform s
 1. supply the `searchFor` function with a business category `"pet-groomer"`. The response details are parsed for key details: `identifier, status, title, address` and written to a categories folder containing json files for each category.
 2. Extract the `category filename` from the `categories directory` and use the GCP `service account` to write data to a sheet that corresponds to the category name.
 
+### What you need
+1. Google Cloud Platform Account
+2. Create a GCP Service Account with write access to the G-Sheet
+3. A GCP API_KEY for the Google Places API 
+
+
 Future Add-Ons
 - Github Actions
   - schedule run scripts to automatically generate new sheets containing new business categories
